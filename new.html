@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRO EXPLORERS - CONTENTS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 28px;
+      text-transform: uppercase;
+      transition: 0.3s ease;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    nav a:hover {
+      color: #4CAF50;
+      text-decoration: underline;
+    }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background: url('11.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .header {
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px 20px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            width: 80%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-list li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.3s;
+        }
+
+        .content-list li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<center>
+
+    <div class="header">
+        <h1>ASTRO EXPLORERS</h1>
+    </div>
+
+    <div class="content">
+      <b>
+            <nav>
+            <a href="sample.html">Globe</a><br><br><br>
+            <a href="t.html">Tutorials</a><br><br><br>
+            <a href="GAMEC.HTML">Quiz</a><br><br><br>
+            <a href="a2.html">Games</a>
+        </nav>
+    </b>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 ASTRO EXPLORERS. All Rights Reserved.</p>
+    </div>
+
+    <script>
+        // Optional JavaScript for interactive features
+        document.querySelectorAll('.content-list li').forEach(function(item) {
+            item.addEventListener('click', function() {
+                alert("You clicked on: " + item.textContent);
+            });
+        });
+    </script>
+</center>
+</body>
+</html>

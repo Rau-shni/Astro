@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Guardians: Soil Health Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('8.jpg'); /* Background image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: black; /* Changed text color to black */
+            text-shadow: none; /* Removed text shadow */
+        }
+
+        #game-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight white transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2b8a3e; /* Keeping this color since it's a nice accent color */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: black; /* Explicitly setting text color to black */
+        }
+
+        #quiz-container {
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #options-container {
+            margin: 20px 0;
+        }
+
+        #options-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+        }
+
+        #options-container button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #next-button, #restart-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #next-button:hover, #restart-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #timer {
+            font-size: 20px;
+            margin-top: 10px;
+            color: black; /* Changed text color to black */
+        }
+
+        .explanation {
+            margin-top: 20px;
+            font-size: 16px;
+            color: black; /* Changed text color to black */
+        }
+
+        .level-info {
+            margin-top: 20px;
+            font-size: 18px;
+            color: black; /* Changed text color to black */
+        }
+
+        .result-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Welcome to Soil Guardians</h1>
+        <p>Test your knowledge of soil health and help restore the earth!</p>
+        
+        <div id="quiz-container">
+            <div id="question"></div>
+            <div id="options-container"></div>
+            <div id="timer"></div>
+            <button id="next-button" class="hidden">Next Question</button>
+        </div>
+
+        <div id="result-container" class="hidden result-container">
+            <h2>Your Result</h2>
+            <p id="score-text"></p>
+            <div class="level-info" id="level-info"></div>
+            <button id="restart-button">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Level 1: Beginner Soil Knowledge
+            {
+                level: 1,
+                question: "What is the most important function of soil?",
+                options: ["To provide water for plants", "To filter and clean water", "To support plant roots", "To act as a habitat for organisms"],
+                correctAnswer: 2,
+                explanation: "Soil provides structure for plant roots, supports water retention, and houses important microorganisms that keep ecosystems balanced."
+            },
+            {
+                level: 1,
+                question: "What type of soil is best for growing plants?",
+                options: ["Clay", "Sandy", "Loam", "Peat"],
+                correctAnswer: 2,
+                explanation: "Loam soil is ideal for plant growth because it has a balanced mixture of sand, silt, and clay, which provides nutrients, water retention, and drainage."
+            },
+            // Level 2: Intermediate Soil Knowledge
+            {
+                level: 2,
+                question: "How can we prevent soil erosion?",
+                options: ["Use chemical fertilizers", "Clear trees and grass", "Practice crop rotation", "Plant cover crops"],
+                correctAnswer: 3,
+                explanation: "Cover crops help hold the soil in place and prevent erosion by protecting the soil from wind and water."
+            },
+            {
+                level: 2,
+                question: "What is soil degradation caused by?",
+                options: ["Excessive rain", "Deforestation", "Pollution", "All of the above"],
+                correctAnswer: 3,
+                explanation: "Soil degradation can be caused by a combination of factors such as deforestation, overgrazing, pollution, and climate change."
+            },
+            // Level 3: Advanced Soil Knowledge
+            {
+                level: 3,
+                question: "Which soil management practice is most sustainable?",
+                options: ["Tilling", "Burning fields", "No-till farming", "Clearing forests for agriculture"],
+                correctAnswer: 2,
+                explanation: "No-till farming helps preserve the soil structure, reduce erosion, and maintain soil health by avoiding disturbance to the soil."
+            },
+            {
+                level: 3,
+                question: "Which of the following contributes to soil fertility?",
+                options: ["Excessive water", "Microbial activity", "Lack of vegetation", "Burning of crops"],
+                correctAnswer: 1,
+                explanation: "Microbial activity in the soil is crucial for breaking down organic matter, which helps in nutrient cycling and improving soil fertility."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let currentLevel = 1;  // Track level progression
+        const questionElement = document.getElementById("question");
+        const optionsContainer = document.getElementById("options-container");
+        const nextButton = document.getElementById("next-button");
+        const resultContainer = document.getElementById("result-container");
+        const scoreText = document.getElementById("score-text");
+        const restartButton = document.getElementById("restart-button");
+        const timerElement = document.getElementById("timer");
+        const levelInfo = document.getElementById("level-info");
+
+        const timeLimit = 15;  // 15 seconds per question
+        let timeRemaining = timeLimit;
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeRemaining--;
+                timerElement.textContent = `Time remaining: ${timeRemaining}s`;
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    checkAnswer(-1); // Treat it as wrong if time runs out
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            clearInterval(timer); // Clear any existing timer
+            timeRemaining = timeLimit; // Reset timer
+            startTimer(); // Start the timer
+
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerHTML = currentQuestion.question;
+            optionsContainer.innerHTML = "";
+
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement("button");
+                optionButton.textContent = option;
+                optionButton.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(optionButton);
+            });
+
+            nextButton.classList.add("hidden"); // Hide the Next button until answer is chosen
+        }
+
+        function checkAnswer(selectedIndex) {
+            clearInterval(timer); // Stop the timer when an answer is selected
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedIndex === currentQuestion.correctAnswer) {
+                score++;
+            }
+
+            alert(currentQuestion.explanation); // Show explanation after answer is chosen
+
+            nextButton.classList.remove("hidden"); // Show the "Next" button after answering
+        }
+
+        function showResult() {
+            resultContainer.classList.remove("hidden");
+            const percentage = (score / questions.length) * 100;
+            scoreText.textContent = `You scored ${score} out of ${questions.length} (${percentage.toFixed(2)}%).`;
+
+            if (percentage >= 80 && currentLevel < 3) {
+                levelInfo.textContent = "Great! You've unlocked level 3: Advanced Soil Health!";
+                currentLevel++;
+            } else if (percentage >= 80 && currentLevel === 3) {
+                levelInfo.textContent = "Congratulations! You've completed all levels!";
+            } else {
+                levelInfo.textContent = "Good try! Keep playing to unlock advanced levels.";
+            }
+        }
+
+        function restartGame() {
+            score = 0;
+            currentQuestionIndex = 0;
+            currentLevel = 1;
+            resultContainer.classList.add("hidden");
+            loadQuestion();
+        }
+
+        nextButton.addEventListener("click", () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        });
+
+        restartButton.addEventListener("click", restartGame);
+
+        loadQuestion();
+    </script>
+</body>
+</html>

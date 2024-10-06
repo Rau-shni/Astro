@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-Maze-ing Underground: Corn Crop Game</title>
+    <link rel="stylesheet" href=" b.css">
+</head>
+<body>
+    <h1>A-Maze-ing Underground: Corn Crop</h1>
+    
+    <div id="level-selection">
+        <button onclick="startLevel(1)">Level 1</button>
+        <button onclick="startLevel(2)">Level 2</button>
+        <button onclick="startLevel(3)">Level 3</button>
+    </div>
+
+    <div id="game-board">
+        <div id="farmer"></div>
+    </div>
+
+    <div id="nutrient-balance">
+        <p style="color: #00FF00;">Nitrogen: <span id="nitrogen">0</span></p>
+        <p style="color: #FFD700;">Phosphorus: <span id="phosphorus">0</span></p>
+        <p style="color: #FFA500;">Potassium: <span id="potassium">0</span></p>
+    </div>
+
+    <script src="c.js"></script>
+</body>
+</html>
